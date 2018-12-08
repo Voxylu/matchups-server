@@ -1,0 +1,120 @@
+type Query {
+  """
+  Need authorization.
+  """
+  me: User
+
+  """
+  Need authorization.
+  """
+  profile(id: ID!): Profile
+
+  profiles(gameName: String!): [Profile!]!
+  teams(freeRoleID: ID!, number: Int, skip: Int): [Team!]!
+
+  games: [Game!]!
+  roles(gameName: String!): [Role!]!
+}
+
+type Mutation {
+  signup(email: String!, password: String!): AuthPayload
+  signin(email: String!, password: String!): AuthPayload
+  """
+  Need authorization.
+  """
+  addProfile(
+    name: String!
+    description: String!
+    gameName: String!
+    roleID: ID!
+  ): Profile!
+  """
+  Need authorization.
+  """
+  editProfile(
+    profileId: ID!
+    name: String
+    description: String
+    roleID: ID
+  ): Profile!
+  """
+  Need authorization.
+  """
+  deleteProfile(profileId: ID!): Profile!
+  """
+  Need authorization.
+  """
+  createTeam(
+    profileId: ID!
+    name: String!
+    description: String!
+    roles: [ID!]!
+  ): Team!
+  """
+  Need authorization.
+  """
+  editTeam(
+    profileId: ID!
+    name: String
+    description: String
+    kickId: String
+  ): Team!
+  """
+  Need authorization.
+  """
+  joinTeam(name: String!, profileId: ID!): Team!
+  """
+  Need authorization
+  """
+  leaveTeam(profileId: ID!): Team!
+  """
+  Need authorization
+  """
+  deleteTeam(profileId: ID!): Team!
+}
+
+type User {
+  id: ID!
+  email: String!
+  profiles: [Profile!]!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type Profile {
+  id: ID!
+  name: String!
+  description: String!
+  imgUrl: String!
+  role: Role!
+  game: Game!
+  team: Team
+}
+
+type Role {
+  id: ID!
+  name: String!
+  imgUrl: String!
+  game: Game!
+  players: [Profile!]!
+}
+
+type Game {
+  id: ID!
+  name: String!
+  roles: [Role!]!
+  description: String!
+  players: [Profile!]!
+}
+
+type Team {
+  id: ID!
+  name: String!
+  description: String!
+  ownerID: ID!
+  players: [Profile!]!
+  wantedRoles: [Role!]!
+}

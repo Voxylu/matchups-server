@@ -1,0 +1,44 @@
+type Utilisateur {
+  id: ID! @unique
+  email: String! @unique
+  password: String!
+  profiles: [Profile!]!
+}
+
+type Profile {
+  id: ID! @unique
+  name: String!
+  description: String!
+  imgUrl: String!
+    @default(
+      value: "https://d15f34w2p8l1cc.cloudfront.net/overwatch/afb4931a50ee4394bd31e5d1cba06f667b54aa9fb715918b90577dfef2085270.png"
+    )
+  role: Role!
+  game: Game!
+  team: Team
+}
+
+type Role {
+  id: ID! @unique
+  name: String!
+  imgUrl: String!
+  game: Game!
+  players: [Profile!]!
+}
+
+type Game {
+  id: ID! @unique
+  name: String! @unique
+  roles: [Role!]!
+  description: String!
+  players: [Profile!]!
+}
+
+type Team {
+  id: ID! @unique
+  name: String! @unique
+  ownerID: ID! @unique
+  description: String! @default(value: "...")
+  wantedRoles: [Role!]!
+  players: [Profile!]!
+}
